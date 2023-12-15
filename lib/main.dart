@@ -1,114 +1,287 @@
 import 'package:flutter/material.dart';
+import 'dart:math' as math;
 
-void main(){
-  runApp(const MyApp());
-}
+void main() => runApp(MyApp());
+
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter layout demo',
-      // home
       home: Scaffold(
-        // appBar
-        appBar: AppBar(
-          title: const Text('Flutter layout demo'),
-        ),
-        // body
-        body: Column(
-          children: <Widget>[
-            Image.asset('assets/natu.png',
-            width: 600,
-            height: 240,
-            ),
-            titleSection,
-            buttonSection,
-            textSection
-
-          ],
-        )
+        appBar: AppBar(title: Text('Collapsing List Demo')),
+        body: CollapsingList(),
       ),
     );
   }
-} // close the app
-// implement the title row
-Widget titleSection=  Container(
-    child:Padding(
-    padding: const EdgeInsets.all(32.0),
-    child: Row(
-         mainAxisAlignment: MainAxisAlignment.start,
-      children: <Widget>[
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
+}
+//  ----
+
+class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
+  _SliverAppBarDelegate({
+    required this.minHeight,
+    required this.maxHeight,
+    required this.child,
+  });
+  final double minHeight;
+  final double maxHeight;
+  final Widget child;
+
+  @override
+  double get minExtent => minHeight;
+  @override
+  double get maxExtent => math.max(maxHeight, minHeight);
+  @override
+  Widget build(
+      BuildContext context,
+      double shrinkOffset,
+      bool overlapsContent)
+  {
+    return new SizedBox.expand(child: child);
+  }
+  @override
+  bool shouldRebuild(_SliverAppBarDelegate oldDelegate) {
+    return maxHeight != oldDelegate.maxHeight ||
+        minHeight != oldDelegate.minHeight ||
+        child != oldDelegate.child;
+  }
+}
+class CollapsingList extends StatelessWidget {
+  // list data
+  SliverPersistentHeader makeHeader(String headerText) {
+    return SliverPersistentHeader(
+      pinned: true,
+      delegate: _SliverAppBarDelegate(
+        minHeight: 60.0,
+        maxHeight: 200.0,
+        child: Container(
+
+        // decorate
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("assets/natu.png"),
+                fit: BoxFit.cover,
+              ),
+            ),
+            child: Center(
+                child: InkWell(
+                     onTap: (){
+                       print('------74--$headerText');
+                     },
+                    child: Text(headerText)))),
+      ),
+    );
+  }
+  @override
+  Widget build(BuildContext context) {
+    return CustomScrollView(
+      slivers: <Widget>[
+        makeHeader('Header Section 1'),
+        SliverGrid.count(
+          crossAxisCount: 3,
+          children: [
+            Container(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                         Icon(Icons.add,color: Colors.green),
+                         SizedBox(
+                           height: 10,
+                         ),
+                         Text('Add',style: TextStyle(color: Colors.blue,fontSize: 18),)
+
+                ],
+              ),
+            ),
+            Container(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Icon(Icons.add,color: Colors.green),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text('Add',style: TextStyle(color: Colors.blue,fontSize: 18),)
+
+                ],
+              ),
+            ),
+            Container(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Icon(Icons.add,color: Colors.green),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text('Add',style: TextStyle(color: Colors.blue,fontSize: 18),)
+
+                ],
+              ),
+            ),
+            Container(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Icon(Icons.add,color: Colors.green),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text('Add',style: TextStyle(color: Colors.blue,fontSize: 18),)
+
+                ],
+              ),
+            ),
+            Container(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Icon(Icons.add,color: Colors.green),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text('Add',style: TextStyle(color: Colors.blue,fontSize: 18),)
+
+                ],
+              ),
+            ),
+            Container(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Icon(Icons.add,color: Colors.green),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text('Add',style: TextStyle(color: Colors.blue,fontSize: 18),)
+
+                ],
+              ),
+            ),
+            Container(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Icon(Icons.add,color: Colors.green),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text('Add',style: TextStyle(color: Colors.blue,fontSize: 18),)
+
+                ],
+              ),
+            ),
+            Container(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Icon(Icons.add,color: Colors.green),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text('Add',style: TextStyle(color: Colors.blue,fontSize: 18),)
+
+                ],
+              ),
+            ),
+            Container(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Icon(Icons.add,color: Colors.green),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text('Add',style: TextStyle(color: Colors.blue,fontSize: 18),)
+
+                ],
+              ),
+            ),
+
+          ],
+        ),
+        makeHeader('Header Section 2'),
+        SliverFixedExtentList(
+          itemExtent: 80.0,
+          delegate: SliverChildListDelegate(
+            [
               Container(
-                        child: const Padding(
-                          padding: const EdgeInsets.only(bottom: 8),
-                          child: Text('Oeschinen Lake Campground', style: TextStyle(
-                          fontWeight: FontWeight.bold
-                          ),),
-                        ),
-                      ),
-                    const  Text('Kandersteg, Switzerland', style: TextStyle(
-                      fontWeight: FontWeight.bold
-                      ),
-                      ),
+                child: ListTile(
+                       leading: Icon(Icons.add,size: 50,color: Colors.yellow),
+                      title: Text('Item 1'),
+                     trailing: Icon(Icons.arrow_forward_ios,size: 50,color: Colors.blue),
+                      subtitle: Text('Sub Name'),
+                ),
+              ),
+              Container(
+                child: ListTile(
+                  leading: Icon(Icons.add,size: 50,color: Colors.yellow),
+                  title: Text('Item 1'),
+                  trailing: Icon(Icons.arrow_forward_ios,size: 50,color: Colors.blue),
+                  subtitle: Text('Sub Name'),
+                ),
+              ),
+              Container(
+                child: ListTile(
+                  leading: Icon(Icons.add,size: 50,color: Colors.yellow),
+                  title: Text('Item 1'),
+                  trailing: Icon(Icons.arrow_forward_ios,size: 50,color: Colors.blue),
+                  subtitle: Text('Sub Name'),
+                ),
+              ),
+              Container(
+                child: ListTile(
+                  leading: Icon(Icons.add,size: 50,color: Colors.yellow),
+                  title: Text('Item 1'),
+                  trailing: Icon(Icons.arrow_forward_ios,size: 50,color: Colors.blue),
+                  subtitle: Text('Sub Name'),
+                ),
+              ),
+              Container(
+                child: ListTile(
+                  leading: Icon(Icons.add,size: 50,color: Colors.yellow),
+                  title: Text('Item 1'),
+                  trailing: Icon(Icons.arrow_forward_ios,size: 50,color: Colors.blue),
+                  subtitle: Text('Sub Name'),
+                ),
+              ),
+
             ],
           ),
         ),
-        Icon(Icons.star,color: Colors.red[500]),
-        Text('41')
-
+        makeHeader('Header Section 3'),
+        SliverGrid(
+          gridDelegate:
+          const SliverGridDelegateWithMaxCrossAxisExtent(
+            maxCrossAxisExtent: 200.0,
+            mainAxisSpacing: 10.0,
+            crossAxisSpacing: 10.0,
+            childAspectRatio: 4.0,
+          ),
+          delegate: SliverChildBuilderDelegate(
+                (BuildContext context, int index) {
+              return Container(
+                alignment: Alignment.center,
+                color: Colors.teal[100 * (index % 9)],
+                child: new Text('grid item $index'),
+              );
+            },
+            childCount: 20,
+          ),
+        ),
+        makeHeader('Header Section 4'),
+        // Yes, this could also be a SliverFixedExtentList. Writing
+        // this way just for an example of SliverList construction.
+        SliverList(
+          delegate: SliverChildListDelegate(
+            [
+              Container(color: Colors.pink, height: 150.0),
+              Container(color: Colors.cyan, height: 150.0),
+              Container(color: Colors.indigo, height: 150.0),
+              Container(color: Colors.blue, height: 150.0),
+            ],
+          ),
+        ),
       ],
-    ),
-  )
-);
-// Implementatin on Button Row
-
-Column _buildButtonColumn(Color color,IconData icon,String label){
-  return Column(
-    mainAxisSize: MainAxisSize.min,
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: <Widget>[
-      Icon(icon,color:color),
-      Container(
-        margin: const EdgeInsets.only(top: 8),
-        child: Text(label,style: TextStyle(
-          fontSize: 12,
-          fontWeight: FontWeight.w400,
-          color: color
-        ),),
-      )
-    ],
-  );
-
+    );
+  }
 }
-// button Section
-Color color = Colors.blueAccent;
-Widget buttonSection = Row(
-  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-  children: <Widget>[
-    _buildButtonColumn(color,Icons.call,'Call'),
-    _buildButtonColumn(color,Icons.near_me,'Route'),
-    _buildButtonColumn(color,Icons.share,'SHARE'),
-  ],
-);
-// Implement the text section
-Widget textSection = Container(
-  padding: const EdgeInsets.all(32),
-
-  child: Text(
-      'Lake Oeschinen lies at the foot of the Blüemlisalp in the Bernese '
-    'Alps. Situated 1,578 meters above sea level, it is one of the '
-    'larger Alpine Lakes. A gondola ride from Kandersteg, followed by a '
-    'half-hour walk through pastures and pine forest, leads you to the '
-    'lake, which warms to 20 degrees Celsius in the summer. Activities '
-    'enjoyed here include rowing, and riding the summer toboggan run.' ,softWrap: true),
-);
-
-
-
-
